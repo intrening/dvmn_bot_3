@@ -4,11 +4,7 @@ import telegram
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import dialogflow_v2 as dialogflow
 
-GAMEVERB_BOT_TOKEN = os.environ['GAMEVERB_BOT_TOKEN']
-DEBUG_BOT_TOKEN = os.environ['DEBUG_BOT_TOKEN']
-CHAT_ID = os.environ['CHAT_ID']
 PROJECT_ID = os.environ['PROJECT_ID']
-
 logger = logging.getLogger("dvmn_bot")
 
 
@@ -70,16 +66,20 @@ def error(bot, update, error):
 
 
 def main():
+    gameverb_bot_token = os.environ['GAMEVERB_BOT_TOKEN']
+    debug_bot_token = os.environ['DEBUG_BOT_TOKEN']
+    chat_id = os.environ['CHAT_ID']
+
     global logger
     logger.setLevel(logging.INFO)
     logger.addHandler(
         MyLogsHandler(
-            bot_token=os.environ['DEBUG_BOT_TOKEN'],
-            chat_id=CHAT_ID,
+            bot_token=debug_bot_token,
+            chat_id=chat_id,
         ),
     )
 
-    updater = Updater(GAMEVERB_BOT_TOKEN)
+    updater = Updater(gameverb_bot_token)
     dispatcher = updater.dispatcher
     logger.info('Бот GAMEVERB_BOT запущен')
 
