@@ -56,7 +56,7 @@ def main():
     args = parser.parse_args()
     filename = args.file_name
 
-    project_id = os.environ['PROJECT_ID']
+    project_id = os.environ['DIALOGFLOW_PROJECT_ID']
     create_intents_from_file(
         project_id=project_id,
         file_name=filename,
