@@ -2,15 +2,23 @@ import vk_api
 from vk_api.longpoll import VkLongPoll, VkEventType
 import os
 import random
-# from dialogflow_intents import detect_intent_texts
+from dialogflow_intents import detect_intent_texts
+
+PROJECT_ID = os.environ['PROJECT_ID']
 
 
-def echo(event, vk_api):
-    vk_api.messages.send(
-        user_id=event.user_id,
-        message=event.text,
-        random_id=random.randint(1, 1000),
+def take_dialogflow_answer(event, vk_api):
+    answer = detect_intent_texts(
+        project_id=PROJECT_ID,
+        session_id=event.user_id,
+        text=event.text,
     )
+    if answer:
+        vk_api.messages.send(
+            user_id=event.user_id,
+            message=answer,
+            random_id=random.randint(1, 1000),
+        )
 
 
 def main():
@@ -28,7 +36,7 @@ def main():
                 print('От меня для: ', event.user_id)
             print('Текст:', event.text)
         if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-            echo(event, vk_session.get_api())
+            take_dialogflow_answer(event, vk_session.get_api())
 
 
 if __name__ == "__main__":

@@ -29,7 +29,8 @@ def take_dialogflow_answer(bot, update):
         session_id=update.message.chat_id,
         text=update.message.text,
     )
-    update.message.reply_text(answer)
+    if answer:
+        update.message.reply_text(answer)
 
 
 def error(bot, update, error):
