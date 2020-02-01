@@ -2,7 +2,7 @@ import logging
 import os
 import telegram
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-import dialogflow_v2 as dialogflow
+from dialogflow_intents import detect_intent_texts
 
 PROJECT_ID = os.environ['PROJECT_ID']
 logger = logging.getLogger("dvmn_bot")
@@ -20,37 +20,10 @@ class MyLogsHandler(logging.Handler):
 
 
 def start(bot, update):
-    """Send a message when the command /start is issued."""
     update.message.reply_text('Здравствуйте!')
 
 
-def detect_intent_texts(project_id, session_id, text, language_code='ru-RU'):
-    """Returns the result of detect intent with text as inputs.
-
-    Using the same `session_id` between requests allows continuation
-    of the conversation."""
-    session_client = dialogflow.SessionsClient()
-
-    session = session_client.session_path(project_id, session_id)
-
-    text_input = dialogflow.types.TextInput(
-        text=text, language_code=language_code)
-
-    query_input = dialogflow.types.QueryInput(text=text_input)
-
-    response = session_client.detect_intent(
-        session=session, query_input=query_input)
-
-    return (response.query_result.fulfillment_text)
-
-
-def echo(bot, update):
-    """Echo the user message."""
-    update.message.reply_text(update.message.text)
-
-
 def take_dialogflow_answer(bot, update):
-    """Echo the user message."""
     answer = detect_intent_texts(
         project_id=PROJECT_ID,
         session_id=update.message.chat_id,
@@ -60,7 +33,6 @@ def take_dialogflow_answer(bot, update):
 
 
 def error(bot, update, error):
-    """Log Errors caused by Updates."""
     global logger
     logger.warning('Update "%s" caused error "%s"', update, error)
 

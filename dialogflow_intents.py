@@ -3,6 +3,26 @@ import dialogflow_v2 as dialogflow
 import json
 
 
+def detect_intent_texts(project_id, session_id, text, language_code='ru-RU'):
+    """Returns the result of detect intent with text as inputs.
+
+    Using the same `session_id` between requests allows continuation
+    of the conversation."""
+    session_client = dialogflow.SessionsClient()
+
+    session = session_client.session_path(project_id, session_id)
+
+    text_input = dialogflow.types.TextInput(
+        text=text, language_code=language_code)
+
+    query_input = dialogflow.types.QueryInput(text=text_input)
+
+    response = session_client.detect_intent(
+        session=session, query_input=query_input)
+
+    return (response.query_result.fulfillment_text)
+
+
 def create_intent(project_id, intent):
     client = dialogflow.IntentsClient()
     parent = client.project_agent_path(project_id)
