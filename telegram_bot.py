@@ -4,7 +4,7 @@ import telegram
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from dialogflow_intents import detect_intent_texts
 
-PROJECT_ID = os.environ['PROJECT_ID']
+PROJECT_ID = os.environ['DIALOGFLOW_PROJECT_ID']
 logger = logging.getLogger("dvmn_bot")
 
 
@@ -24,13 +24,14 @@ def start(bot, update):
 
 
 def take_dialogflow_answer(bot, update):
-    answer = detect_intent_texts(
+    response = detect_intent_texts(
         project_id=PROJECT_ID,
         session_id=update.message.chat_id,
         text=update.message.text,
     )
-    if answer:
-        update.message.reply_text(answer)
+    update.message.reply_text(
+        response.query_result.fulfillment_text,
+    )
 
 
 def error(bot, update, error):
@@ -41,7 +42,7 @@ def error(bot, update, error):
 def main():
     gameverb_bot_token = os.environ['GAMEVERB_BOT_TOKEN']
     debug_bot_token = os.environ['DEBUG_BOT_TOKEN']
-    chat_id = os.environ['CHAT_ID']
+    chat_id = os.environ['DEBUG_CHAT_ID']
 
     global logger
     logger.setLevel(logging.INFO)

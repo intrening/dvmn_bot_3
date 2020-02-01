@@ -1,6 +1,7 @@
 import os
 import dialogflow_v2 as dialogflow
 import json
+import argparse
 
 
 def detect_intent_texts(project_id, session_id, text, language_code='ru-RU'):
@@ -9,21 +10,13 @@ def detect_intent_texts(project_id, session_id, text, language_code='ru-RU'):
     Using the same `session_id` between requests allows continuation
     of the conversation."""
     session_client = dialogflow.SessionsClient()
-
     session = session_client.session_path(project_id, session_id)
-
     text_input = dialogflow.types.TextInput(
         text=text, language_code=language_code)
-
     query_input = dialogflow.types.QueryInput(text=text_input)
-
     response = session_client.detect_intent(
         session=session, query_input=query_input)
-
-    if response.query_result.intent.is_fallback:
-        return None
-
-    return (response.query_result.fulfillment_text)
+    return response
 
 
 def create_intent(project_id, intent):
@@ -33,7 +26,7 @@ def create_intent(project_id, intent):
     return response
 
 
-def create_intents_from_file(file_name, project_id):
+def create_intents_from_file(project_id, file_name):
     with open(file_name, 'r') as my_file:
         messages = json.load(my_file)
 
@@ -58,10 +51,15 @@ def create_intents_from_file(file_name, project_id):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("filename")
+    args = parser.parse_args()
+    filename = args.file_name
+
     project_id = os.environ['PROJECT_ID']
     create_intents_from_file(
-        file_name='questions.json',
         project_id=project_id,
+        file_name=filename,
     )
 
 

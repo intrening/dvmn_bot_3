@@ -8,17 +8,18 @@ PROJECT_ID = os.environ['PROJECT_ID']
 
 
 def take_dialogflow_answer(event, vk_api):
-    answer = detect_intent_texts(
+    response = detect_intent_texts(
         project_id=PROJECT_ID,
         session_id=event.user_id,
         text=event.text,
     )
-    if answer:
-        vk_api.messages.send(
-            user_id=event.user_id,
-            message=answer,
-            random_id=random.randint(1, 1000),
-        )
+    if response.query_result.intent.is_fallback:
+        return None
+    vk_api.messages.send(
+        user_id=event.user_id,
+        message=response.query_result.fulfillment_text,
+        random_id=random.randint(1, 1000),
+    )
 
 
 def main():
