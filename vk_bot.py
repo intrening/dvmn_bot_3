@@ -1,9 +1,10 @@
-import vk_api
-from vk_api.longpoll import VkLongPoll, VkEventType
+import logging
 import os
 import random
+import vk_api
+from vk_api.longpoll import VkLongPoll, VkEventType
 from dialogflow_intents import detect_intent_texts
-
+from telegram_logger import TelegramLogsHandler
 
 PROJECT_ID = os.environ['DIALOGFLOW_PROJECT_ID']
 
@@ -24,8 +25,12 @@ def take_dialogflow_answer(event, vk_api):
 
 
 def main():
+    logger = logging.getLogger("dvmn_bot_vk")
+    logger.setLevel(logging.INFO)
+    logger.addHandler(TelegramLogsHandler())
     vk_token = os.environ['VK_GROUP_TOKEN']
     vk_session = vk_api.VkApi(token=vk_token)
+    logger.info('Бот GAMEVERB_BOT в ВКонтакте запущен')
 
     longpoll = VkLongPoll(vk_session)
 
