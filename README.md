@@ -22,6 +22,14 @@ pip install -r requirements.txt
 
 `VK_GROUP_TOKEN` - токен группы ВКонтакте
 
+### Примеры работающих ботов
+
+Работающий бот в VKontakte:
+`https://vk.com/universuspro`
+
+Работающий бот в Telegram:
+`http://t.me/dvmn3_bot`
+
 
 ### Пример использования
 Для тренировки бота загружайте вопросы, используя файл json.
