@@ -30,6 +30,8 @@ pip install -r requirements.txt
 Работающий бот в Telegram:
 `http://t.me/dvmn3_bot`
 
+Пример:
+![](example_tlgrm.gif)
 
 ### Пример использования
 Для тренировки бота загружайте вопросы, используя файл json.
