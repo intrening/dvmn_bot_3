@@ -5,6 +5,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from dialogflow_intents import detect_intent_texts
 
 PROJECT_ID = os.environ['DIALOGFLOW_PROJECT_ID']
+logger = logging.getLogger("dvmn_bot_telegram")
 
 
 def start(bot, update):
@@ -25,7 +26,6 @@ def take_dialogflow_answer(bot, update):
 def main():
     gameverb_bot_token = os.environ['GAMEVERB_BOT_TOKEN']
 
-    logger = logging.getLogger("dvmn_bot_telegram")
     logger.setLevel(logging.INFO)
     logger.addHandler(TelegramLogsHandler())
 

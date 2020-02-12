@@ -7,6 +7,7 @@ from dialogflow_intents import detect_intent_texts
 from telegram_logger import TelegramLogsHandler
 
 PROJECT_ID = os.environ['DIALOGFLOW_PROJECT_ID']
+logger = logging.getLogger("dvmn_bot_vk")
 
 
 def take_dialogflow_answer(event, vk_api):
@@ -25,7 +26,6 @@ def take_dialogflow_answer(event, vk_api):
 
 
 def main():
-    logger = logging.getLogger("dvmn_bot_vk")
     logger.setLevel(logging.INFO)
     logger.addHandler(TelegramLogsHandler())
     vk_token = os.environ['VK_GROUP_TOKEN']
