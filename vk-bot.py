@@ -26,9 +26,16 @@ def take_dialogflow_answer(event, vk_api):
 
 
 def main():
-    logger.setLevel(logging.INFO)
-    logger.addHandler(TelegramLogsHandler())
     vk_token = os.environ['VK_GROUP_TOKEN']
+    debug_bot_token = os.environ['DEBUG_BOT_TOKEN']
+    debug_chat_id = os.environ['DEBUG_CHAT_ID']
+
+    logger.setLevel(logging.INFO)
+    logger.addHandler(TelegramLogsHandler(
+        debug_bot_token=debug_bot_token,
+        chat_id=debug_chat_id,
+    ))
+
     vk_session = vk_api.VkApi(token=vk_token)
     logger.info('Бот GAMEVERB_BOT в ВКонтакте запущен')
 

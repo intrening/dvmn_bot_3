@@ -25,9 +25,14 @@ def take_dialogflow_answer(bot, update):
 
 def main():
     gameverb_bot_token = os.environ['GAMEVERB_BOT_TOKEN']
+    debug_bot_token = os.environ['DEBUG_BOT_TOKEN']
+    debug_chat_id = os.environ['DEBUG_CHAT_ID']
 
     logger.setLevel(logging.INFO)
-    logger.addHandler(TelegramLogsHandler())
+    logger.addHandler(TelegramLogsHandler(
+        debug_bot_token=debug_bot_token,
+        chat_id=debug_chat_id,
+    ))
 
     updater = Updater(gameverb_bot_token)
     dispatcher = updater.dispatcher
